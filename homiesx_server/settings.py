@@ -14,12 +14,14 @@ def get_env_bool(name, default=False):
     return value.strip().lower() in {"1", "true", "yes", "on"}
 
 
-DEBUG = get_env_bool("DJANGO_DEBUG", True)
+DEBUG = get_env_bool("DJANGO_DEBUG", False)
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY") or (get_random_secret_key() if not DEBUG else "development-only-change-me")
 DEFAULT_ALLOWED_HOSTS = "localhost,127.0.0.1,[::1],.railway.app"
 ALLOWED_HOSTS = [host.strip() for host in os.environ.get("ALLOWED_HOSTS", DEFAULT_ALLOWED_HOSTS).split(",") if host.strip()]
 if DEBUG:
-    ALLOWED_HOSTS = ["localhost", "127.0.0.1", "[::1]"]
+    for host in ("localhost", "127.0.0.1", "[::1]"):
+        if host not in ALLOWED_HOSTS:
+            ALLOWED_HOSTS.append(host)
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 SECURE_SSL_REDIRECT = get_env_bool("SECURE_SSL_REDIRECT", not DEBUG)
