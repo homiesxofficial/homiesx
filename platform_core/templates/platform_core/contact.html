@@ -1,0 +1,13 @@
+{% extends "platform_core/base.html" %}
+{% block title %}Contact · {{ site_settings.brand_name|default:'HOMIESX' }}{% endblock %}
+{% block content %}
+<main class="server-container server-page details-page">
+  <p class="server-eyebrow">Contact {{ site_settings.brand_name|default:'HOMIESX' }}</p>
+  <h1>Let’s build what students need next.</h1>
+  <div class="contact-details">
+    <div><span>Email</span><a href="mailto:{{ site_settings.contact_email }}">{{ site_settings.contact_email }}</a></div>
+    {% if site_settings.contact_phone %}<div><span>Phone</span><a href="tel:{{ site_settings.contact_phone }}">{{ site_settings.contact_phone }}</a></div>{% endif %}
+    {% if site_settings.contact_address %}<div><span>Address</span><p>{{ site_settings.contact_address }}</p></div>{% endif %}
+  </div>
+</main>
+{% endblock %}

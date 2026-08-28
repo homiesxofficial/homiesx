@@ -1,0 +1,13 @@
+{% extends "platform_core/control/base.html" %}
+{% block title %}Login History{% endblock %}
+{% block crumb %}Login History{% endblock %}
+{% block content %}
+<section class="control-content">
+  <div class="control-heading"><div><p class="control-kicker">Security activity</p><h1>Student Login History</h1><p class="control-muted">Review student access attempts by name, email, provider, and time.</p></div></div>
+  <section class="panel table-panel">
+    <form class="table-toolbar" method="get"><label for="login-search">Search by name</label><input id="login-search" name="q" value="{{ query }}" type="search" placeholder="Student name or email"><button class="edit-link" type="submit">Search</button>{% if query %}<a class="cancel-link" href="{% url 'control_login_history' %}">Clear</a>{% endif %}<span>{{ history|length }} shown</span></form>
+    <div class="login-history-head"><span>Student</span><span>Method</span><span>Result</span><span>Time</span></div>
+    {% for entry in history %}<div class="login-history-row"><div><strong>{{ entry.name|default:"Unknown student" }}</strong><small>{{ entry.email|default:"No email shared" }}</small></div><span>{{ entry.method|title }}</span><span class="{% if entry.successful %}login-success{% else %}login-failure{% endif %}">{% if entry.successful %}Successful{% else %}Failed{% endif %}</span><time datetime="{{ entry.created_at|date:'c' }}">{{ entry.created_at|date:'d M Y, H:i' }}</time></div>{% empty %}<div class="empty-state">No student login attempts found.</div>{% endfor %}
+  </section>
+</section>
+{% endblock %}

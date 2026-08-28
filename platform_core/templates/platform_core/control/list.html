@@ -1,0 +1,59 @@
+{% extends "platform_core/control/base.html" %}
+{% block title %}{{ config.label }}{% endblock %}
+{% block crumb %}{{ config.label }}{% endblock %}
+{% block content %}
+<section class="control-content">
+  <div class="control-heading">
+    <div>
+      <p class="control-kicker">{% if section == 'students' %}Member directory{% else %}Content library{% endif %}</p>
+      <h1>{{ config.label }}</h1>
+      <p class="control-muted">{{ config.description }}</p>
+    </div>
+    <a class="control-button" href="{% url 'control_create' section=section %}">New {{ config.label|lower|slice:':-1' }} <span>+</span></a>
+  </div>
+  <section class="panel table-panel">
+    <form class="table-toolbar" method="get">
+      <label for="content-search">Search {{ config.label|lower }}</label>
+      <input id="content-search" type="search" name="q" value="{{ query }}" placeholder="Search by title, name, or details">
+      <button class="edit-link" type="submit">Search</button>
+      <select name="status" aria-label="Filter by status">
+        <option value="all" {% if status == 'all' %}selected{% endif %}>All statuses</option>
+        <option value="published" {% if status == 'published' %}selected{% endif %}>{% if section == 'students' %}Active{% else %}Published{% endif %}</option>
+        <option value="draft" {% if status == 'draft' %}selected{% endif %}>{% if section == 'students' %}Inactive{% else %}Drafts{% endif %}</option>
+      </select>
+      {% if query %}<a class="cancel-link" href="{% url 'control_list' section=section %}">Clear</a>{% endif %}
+      <span>{{ items.paginator.count }} total entries</span>
+    </form>
+    <form method="post" class="bulk-form">
+      {% csrf_token %}
+      <div class="bulk-toolbar"><label><input type="checkbox" data-select-all> Select page</label><select name="bulk_action" aria-label="Bulk status action"><option value="enable">{% if section == 'students' %}Activate selected{% else %}Publish selected{% endif %}</option><option value="disable">{% if section == 'students' %}Deactivate selected{% else %}Unpublish selected{% endif %}</option></select><button class="edit-link" type="submit">Apply</button></div>
+    {% for item in items %}
+      <div class="content-row">
+        <div class="content-main">
+          <input class="row-check" type="checkbox" name="selected" value="{{ item.pk }}" aria-label="Select {{ item.title }}">
+          <span class="status-marker {% if item.is_active or item.is_published %}is-live{% endif %}"></span>
+          <div>
+            <a href="{% url 'control_edit' section=section pk=item.pk %}"><b>{{ item.title }}</b></a>
+            <p>{{ item.description|truncatechars:110 }}</p>
+          </div>
+        </div>
+        <div class="content-meta">
+          <span>{% if section == 'students' %}{% if item.is_verified %}Verified{% else %}Needs review{% endif %}{% elif item.is_published %}Published{% else %}Draft{% endif %}</span>
+          <a class="edit-link" href="{% url 'control_edit' section=section pk=item.pk %}">Edit ↗</a>
+          <a class="delete-link" href="{% url 'control_delete' section=section pk=item.pk %}">Remove</a>
+        </div>
+      </div>
+    {% empty %}
+      <div class="empty-state">{% if query %}No entries match “{{ query }}”.{% else %}Nothing here yet. Create your first entry to populate the public site.{% endif %}</div>
+    {% endfor %}
+    </form>
+    {% if items.has_other_pages %}
+      <nav class="pagination" aria-label="{{ config.label }} pages">
+        {% if items.has_previous %}<a href="?q={{ query|urlencode }}&page={{ items.previous_page_number }}">Previous</a>{% endif %}
+        <span>Page {{ items.number }} of {{ items.paginator.num_pages }}</span>
+        {% if items.has_next %}<a href="?q={{ query|urlencode }}&page={{ items.next_page_number }}">Next</a>{% endif %}
+      </nav>
+    {% endif %}
+  </section>
+</section>
+{% endblock %}

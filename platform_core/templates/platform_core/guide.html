@@ -1,0 +1,11 @@
+{% extends "platform_core/base.html" %}
+{% block title %}Campus Guide · {{ site_settings.brand_name|default:'GHRCEMP Hub' }}{% endblock %}
+{% block content %}
+<main class="server-container server-page guide-page">
+  <p class="server-eyebrow">GHRCEMP Campus Guide</p>
+  <h1>What do you need next?</h1>
+  <p class="details-lede">Search the live student hub. The guide ranks published content only, so every result leads somewhere real.</p>
+  <form class="guide-form" method="get"><input name="q" value="{{ query }}" placeholder="Try: FY programming notes or Python project" aria-label="Ask the Campus Guide"><select name="year" aria-label="Choose study year"><option value="all" {% if year == 'all' %}selected{% endif %}>All years</option><option value="fy" {% if year == 'fy' %}selected{% endif %}>FY</option><option value="sy" {% if year == 'sy' %}selected{% endif %}>SY</option><option value="ty" {% if year == 'ty' %}selected{% endif %}>TY</option></select><button class="server-cta" type="submit">Find matches <span>→</span></button></form>
+  {% if query %}<section class="guide-results"><p class="server-eyebrow">Matches for “{{ query }}”</p>{% for match in matches %}<a class="guide-result" href="/{{ match.path }}"><span>{{ match.kind }}</span><strong>{{ match.item.title }}</strong><small>{{ match.item.description|truncatechars:130 }}</small></a>{% empty %}<p class="server-empty">No published matches yet. Try a broader subject or another year.</p>{% endfor %}</section>{% endif %}
+</main>
+{% endblock %}

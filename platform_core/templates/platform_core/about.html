@@ -1,0 +1,10 @@
+{% extends "platform_core/base.html" %}
+{% block title %}About · {{ site_settings.brand_name|default:'HOMIESX' }}{% endblock %}
+{% block content %}
+<main class="server-container server-page details-page">
+  <p class="server-eyebrow">About {{ site_settings.brand_name|default:'HOMIESX' }}</p>
+  <h1>{{ site_settings.about_heading|default:'A better way to move forward together.' }}</h1>
+  <p class="details-lede">{{ site_settings.about_description|default:'HOMIESX brings students, knowledge, opportunities, and collaborators into one focused ecosystem.' }}</p>
+  <a class="server-cta" href="/contact/">Get in touch <span>→</span></a>
+</main>
+{% endblock %}

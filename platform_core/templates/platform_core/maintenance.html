@@ -1,0 +1,18 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ settings.brand_name|default:"HOMIESX" }} · Maintenance</title>
+  <link rel="stylesheet" href="{% static 'server.css' %}">
+</head>
+<body>
+  <main class="server-container server-page maintenance-page">
+    <p class="server-eyebrow">{{ settings.brand_name|default:"HOMIESX" }}</p>
+    <h1>We will be right back.</h1>
+    <p>{{ settings.maintenance_message }}</p>
+    <a class="server-cta" href="/admin/">Staff sign in <span>→</span></a>
+  </main>
+</body>
+</html>

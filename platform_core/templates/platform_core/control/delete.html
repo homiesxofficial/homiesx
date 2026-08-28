@@ -1,0 +1,4 @@
+{% extends "platform_core/control/base.html" %}
+{% block title %}Delete {{ config.label }}{% endblock %}
+{% block crumb %}Remove entry{% endblock %}
+{% block content %}<section class="control-content narrow-content"><div class="panel confirm-panel"><span class="warning-icon">!</span><p class="control-kicker">Permanent action</p><h1>Remove this entry?</h1><p class="control-muted">You are about to delete <strong>{{ item.title }}</strong>. This cannot be undone.</p><form method="post">{% csrf_token %}<a class="cancel-link" href="{% url 'control_list' section=section %}">Keep entry</a><button class="danger-button" type="submit">Delete permanently</button></form></div></section>{% endblock %}

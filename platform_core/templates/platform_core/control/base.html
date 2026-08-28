@@ -1,0 +1,38 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Control room{% endblock %} · HOMIESX</title>
+  <link rel="stylesheet" href="{% static 'admin-control-next.css' %}">
+  <link rel="stylesheet" href="{% static 'admin-crud.css' %}">
+  <link rel="stylesheet" href="{% static 'admin-hero.css' %}">
+  <link rel="stylesheet" href="{% static 'admin-features.css' %}">
+  <link rel="stylesheet" href="{% static 'admin-login-history.css' %}">
+  <script src="{% static 'admin-control.js' %}" defer></script>
+</head>
+<body class="control-body">
+  <div class="control-layout">
+    <aside class="control-sidebar">
+      <a class="control-logo" href="{% url 'control_dashboard' %}"><span>H</span> HOMIESX <b>/ CONTROL</b></a>
+      <div class="control-sidebar-label">Workspace</div>
+      <nav class="control-nav" aria-label="Admin navigation">
+        <a class="{% if request.resolver_match.url_name == 'control_dashboard' %}is-active{% endif %}" href="{% url 'control_dashboard' %}"><span>⌂</span> Overview</a>
+        <a class="{% if section == 'students' %}is-active{% endif %}" href="{% url 'control_list' section='students' %}"><span>00</span> Students</a>
+        <a class="{% if section == 'resources' %}is-active{% endif %}" href="{% url 'control_list' section='resources' %}"><span>01</span> Resources</a>
+        <a class="{% if section == 'events' %}is-active{% endif %}" href="{% url 'control_list' section='events' %}"><span>02</span> Events</a>
+        <a class="{% if section == 'opportunities' %}is-active{% endif %}" href="{% url 'control_list' section='opportunities' %}"><span>03</span> Opportunities</a>
+        <a class="{% if section == 'projects' %}is-active{% endif %}" href="{% url 'control_list' section='projects' %}"><span>04</span> Projects</a>
+        <a class="{% if request.resolver_match.url_name == 'control_settings' %}is-active{% endif %}" href="{% url 'control_settings' %}"><span>✦</span> Site settings</a>
+          <a class="{% if section == 'login_history' %}is-active{% endif %}" href="{% url 'control_login_history' %}"><span>05</span> Login History</a>
+      </nav>
+      <div class="control-sidebar-foot"><span class="status-dot"></span> System operational</div>
+    </aside>
+    <main class="control-main">
+      <header class="control-topbar"><div class="control-breadcrumb">HOMIESX <span>/</span> {% block crumb %}Overview{% endblock %}</div><div class="control-top-actions"><label class="command-search"><span>⌕</span><input type="search" placeholder="Search workspace" aria-label="Search workspace"><kbd>⌘ K</kbd></label><a class="top-link" href="/" target="_blank" rel="noreferrer">View website <span>↗</span></a><button class="notify-button" type="button" aria-label="Notifications" title="Notifications"><span></span>◌</button><a class="avatar" href="{% url 'control_logout' %}" title="Sign out">{{ request.user.username|first|upper }}</a></div></header>
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</body>
+</html>
